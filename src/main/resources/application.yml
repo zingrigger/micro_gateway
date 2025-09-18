@@ -1,0 +1,65 @@
+# tomcat
+server:
+  port: 8062
+
+# 注册中心
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 5
+
+
+spring:
+  application:
+    name: BOSYON-GATEWAY
+  profiles:
+    # 路由配置
+    include:
+      - routes
+    active: dev
+  # redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 123456
+      timeout: 10000ms
+      lettuce:
+        pool:
+          max-active: 16
+          max-idle: 8
+          max-wait: 1000ms
+          min-idle: 0
+        shutdown-timeout: 100ms
+      database: 12
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedHeaders: "*"
+            # allowCredentials: true
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - OPTIONS
+        add-to-simple-url-handler-mapping: true
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: BOSYON-USERCENTER
+          uri: lb://BOSYON-USERCENTER
+          predicates:
+            - Path=/usercenter/**
+          filters:
+            - StripPrefix=1
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
