@@ -1,4 +1,4 @@
-package com.toone.gateway;
+package com.bosyon.gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
