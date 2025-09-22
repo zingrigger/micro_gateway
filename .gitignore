@@ -47,6 +47,6 @@ build/
 
 
 ### dev
-application-dev.yml
+src/main/resources/application-dev.yml
 /.idea/
 .idea/
