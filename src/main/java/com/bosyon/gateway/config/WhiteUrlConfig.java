@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
+/**
+ * 系统内部接口白名单
+ * 用于放行不需要登录验证的接口
+ */
 @Component
 public class WhiteUrlConfig {
 

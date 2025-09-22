@@ -1,0 +1,51 @@
+# tomcat
+server:
+  port: 8062
+  tomcat:
+    max-http-form-post-size: -1
+
+# 注册中心
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 5
+    metadata-map:
+      zone: test-${spring.cloud.client.ip-address}
+
+# ribbon 策略
+ribbon:
+  NFLoadBalancerClassName: com.netflix.loadbalancer.ZoneAwareLoadBalancer
+  EnableZoneExclusivity: true
+
+spring:
+  application:
+    name: BOSYON-GATEWAY
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 123456
+      timeout: 10000ms
+      lettuce:
+        pool:
+          max-active: 16
+          max-idle: 8
+          max-wait: 1000ms
+          min-idle: 0
+        shutdown-timeout: 100ms
+
+# 日志
+logging:
+  level:
+    root: INFO
+  pattern:
+    console: '%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'
+    file: '%d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n'
+  file:
+    name: log/gateway.log

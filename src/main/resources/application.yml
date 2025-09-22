@@ -22,7 +22,6 @@ spring:
     # 路由配置
     include:
       - routes
-    active: dev
   # redis
   data:
     redis:
@@ -37,9 +36,9 @@ spring:
           max-wait: 1000ms
           min-idle: 0
         shutdown-timeout: 100ms
-      database: 12
   cloud:
     gateway:
+      # 跨越设置
       globalcors:
         cors-configurations:
           '[/**]':
@@ -51,9 +50,11 @@ spring:
               - POST
               - OPTIONS
         add-to-simple-url-handler-mapping: true
+      # 服务发现
       discovery:
         locator:
           enabled: true
+      # 路由表
       routes:
         - id: BOSYON-USERCENTER
           uri: lb://BOSYON-USERCENTER

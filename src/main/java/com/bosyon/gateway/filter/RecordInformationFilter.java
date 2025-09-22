@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.CityResponse;
+import io.netty.util.internal.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -33,15 +36,31 @@ public class RecordInformationFilter implements GlobalFilter, Ordered {
 
     private final DatabaseReader databaseReader;
 
+    @Value("${geo.geolite2citypath:null}")
+    private String geoLiteCityPath;
+
+    private boolean enableGeoLite2 = false;
+
     public RecordInformationFilter() throws Exception {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("geo/GeoLite2-City.mmdb");
+        if(StringUtils.isBlank(geoLiteCityPath)){
+            logger.warn("geoLiteCityPath is null");
+            databaseReader = null ;
+            enableGeoLite2 = false ;
+            return ;
+        }
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(geoLiteCityPath + "/GeoLite2-City.mmdb");
         databaseReader = new DatabaseReader.Builder(inputStream).build();
+        enableGeoLite2 = true ;
     }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         logger.info("1. RecordInformationFilter 记录请求源：");
-        recordInformation(exchange);
+        if(this.enableGeoLite2){
+            recordInformation(exchange);
+        }else{
+            logger.info("未配置");
+        }
         return chain.filter(exchange);
     }
 
@@ -139,7 +158,7 @@ public class RecordInformationFilter implements GlobalFilter, Ordered {
     }
 
     private String getGeoLocation(String ipAddress) {
-        if("0:0:0:0:0:0:0:1".equalsIgnoreCase(ipAddress)){
+        if ("0:0:0:0:0:0:0:1".equalsIgnoreCase(ipAddress)) {
             return "localhost";
         }
         try {

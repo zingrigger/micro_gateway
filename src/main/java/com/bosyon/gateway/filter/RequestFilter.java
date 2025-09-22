@@ -6,7 +6,6 @@ import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -34,12 +33,6 @@ import java.util.Set;
 public class RequestFilter implements GlobalFilter, Ordered {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestFilter.class);
-
-    @Value("${usercenter.token.secret}")
-    private String secret;
-
-    @Value("${usercenter.superadmin.userid}")
-    private String superAdminId;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
