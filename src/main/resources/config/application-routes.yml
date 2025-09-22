@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedHeaders: "*"
+            # allowCredentials: true
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - OPTIONS
+        add-to-simple-url-handler-mapping: true
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: BOSYON-USERCENTER
+          uri: lb://BOSYON-USERCENTER
+          predicates:
+            - Path=/usercenter/**
+          filters:
+            - StripPrefix=1
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
