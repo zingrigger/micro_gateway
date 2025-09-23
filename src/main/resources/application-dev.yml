@@ -41,13 +41,3 @@ spring:
           max-wait: 1000ms
           min-idle: 0
         shutdown-timeout: 100ms
-
-# 日志
-logging:
-  level:
-    root: INFO
-  pattern:
-    console: '%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'
-    file: '%d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n'
-  file:
-    name: log/gateway.log
