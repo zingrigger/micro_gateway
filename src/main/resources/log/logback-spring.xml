@@ -35,6 +35,19 @@
     </appender>
 
     <!-- 系统日志输出 -->
+    <appender name="FILE_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${SPRING_APP_NAME}/all.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件名格式 -->
+            <fileNamePattern>${LOG_PATH}/${SPRING_APP_NAME}/all.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 日志最大的历史 60天 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
     <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/${SPRING_APP_NAME}/info.log</file>
         <!-- 循环政策：基于时间创建日志文件 https://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy -->
@@ -133,14 +146,17 @@
     </appender>
 
 
+    <springProfile name="dev">
         <!-- 大于等于info级别的才会输出 -->
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
 
+    <springProfile name="test">
         <root level="info">
             <!-- 生产环境最好不配置console写文件 -->
+            <appender-ref ref="FILE_ALL"/>
             <appender-ref ref="FILE_INFO"/>
             <appender-ref ref="FILE_WARN"/>
             <appender-ref ref="FILE_ERROR"/>
