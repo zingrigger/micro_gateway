@@ -146,7 +146,7 @@
     </appender>
 
 
-    <springProfile name="dev">
+    <springProfile name="dev,localhost">
         <!-- 大于等于info级别的才会输出 -->
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
