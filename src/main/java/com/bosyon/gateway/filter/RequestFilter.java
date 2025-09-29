@@ -1,5 +1,6 @@
 package com.bosyon.gateway.filter;
 
+import com.bosyon.gateway.config.FilterOrderConfig;
 import com.bosyon.gateway.config.WhiteUrlConfig;
 import com.bosyon.gateway.utils.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -140,7 +142,7 @@ public class RequestFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return -2;
+        return FilterOrderConfig.JWT_AUTH_FILTER_ORDER;
     }
 
 

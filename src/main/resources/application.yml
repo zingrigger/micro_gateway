@@ -68,3 +68,10 @@ spring:
 
 logging:
   config: classpath:log/logback-spring.xml
+
+bosyon:
+  gateway:
+    # 过滤器是否启动
+    filters:
+      multi-tenant:
+        enabled: true
