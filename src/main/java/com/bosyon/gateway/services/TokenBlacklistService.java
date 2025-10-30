@@ -30,4 +30,7 @@ public interface TokenBlacklistService {
      */
     Mono<Long> cleanupExpiredTokens();
 
+
+    boolean isTokenRevoked(String jti);
+
 }

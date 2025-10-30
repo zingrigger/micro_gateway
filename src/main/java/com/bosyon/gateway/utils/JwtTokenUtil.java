@@ -38,4 +38,9 @@ public class JwtTokenUtil {
         final Claims claims = getClaimsFromToken(token);
         return claims == null || claims.getExpiration().before(new Date());
     }
+
+    public String generateToken(String userId, String tenantId, String roles){
+        return null ;
+    }
+
 }

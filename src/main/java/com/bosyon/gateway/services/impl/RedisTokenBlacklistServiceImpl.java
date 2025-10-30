@@ -144,4 +144,9 @@ public class RedisTokenBlacklistServiceImpl implements TokenBlacklistService {
                 .parseClaimsJwt(token + ".signature") // 添加伪签名
                 .getBody();
     }
+
+    @Override
+    public boolean isTokenRevoked(String jti) {
+        return false;
+    }
 }
